@@ -8,7 +8,7 @@ function Form() {
   const [input, setInput] = useState("");
 
   const handleKeyDown = (e) => {
-    if (e.code === "Space") {
+    if (e.code === "Space" || e.keyCode === 32 || e.which === 32) {
       if (input && input !== "") {
         dispatch(check({ input, next: true }));
         setInput("");

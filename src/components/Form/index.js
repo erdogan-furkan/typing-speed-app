@@ -7,22 +7,20 @@ function Form() {
   const finished = useSelector((state) => state.words.finished);
   const [input, setInput] = useState("");
 
-  const handleKeyDown = (e) => {
-    if (e.code === "Space" || e.keyCode === 32 || e.which === 32) {
-      if (input && input !== "") {
-        dispatch(check({ input, next: true }));
-        setInput("");
-      }
-    }
-  };
-
   const handleChange = ({ target }) => {
-    setInput(target.value.trim());
+    setInput(target.value.trimStart());
   };
 
   useEffect(() => {
-    if (input && input !== "") {
-      dispatch(check({ input }));
+    if (input.slice(-1) === " ") {
+      if (input && input !== "") {
+        dispatch(check({ input: input.trim(), next: true }));
+        setInput("");
+      }
+    } else {
+      if (input && input !== "") {
+        dispatch(check({ input }));
+      }
     }
   }, [input, dispatch]);
 
@@ -32,7 +30,6 @@ function Form() {
         type="text"
         value={input}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
         className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${
           finished && "cursor-not-allowed"
         }`}
